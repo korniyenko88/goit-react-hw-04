@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './App.css';
+import SearchBar from './components/SearchBar/SearchBar';
+import ImageGallery from './components/ImageGallery/ImageGallery';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const YOUR_ACCESS_KEY = 'myHNeFHoPkXbeMBmHoSmpyKTa-dnwJKGx5ag4R9Kc-s';
+  const [img, setImg] = useState(null);
+
+  useEffect(() => {
+    const fetchImg = async () => {
+      try {
+        const { data } = await axios.get(`https://api.unsplash.com/photos/?client_id=${YOUR_ACCESS_KEY}`);
+        setImg( data.urls.small);
+        console.log("data: ", data);
+      } catch (error) {
+        console.error("Error fetching the images: ", error);
+      }
+    };
+    
+    fetchImg();
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <SearchBar />
+      <ImageGallery />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

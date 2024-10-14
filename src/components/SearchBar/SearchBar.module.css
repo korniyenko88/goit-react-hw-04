@@ -1,0 +1,15 @@
+.searchWraper {
+background-color: aqua;
+display: flex;justify-content: center;
+}
+.seachForm {
+    display: flex;
+    gap: 8px;
+}
+.searchInput {
+padding: 8px 15px;
+font-size: 20px;
+}
+.searchBtn {
+
+}
