@@ -17,7 +17,8 @@ function App() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const { data } = await axios.get(`https://api.unsplash.com/search/photos?client_id=${YOUR_ACCESS_KEY}&query=${YOUR_QUERY}&orientation=squarish`);
+        const { data } = await axios.get(`
+          https://api.unsplash.com/search/photos?client_id=${YOUR_ACCESS_KEY}&query=${YOUR_QUERY}&orientation=squarish&&per_page=30`);
         console.log(data);
         setImages(data.results); 
       } catch (err) {
