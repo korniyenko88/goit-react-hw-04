@@ -1,19 +1,23 @@
-import styles from './ImageGallery.module.css'
+import ImageCard from '../ImageCard/ImageCard';
+import styles from './ImageGallery.module.css';
 
-const ImageGallery = () => {
-  return (
-    <div>
-      <ul className={styles.galleryList}>
-	{/* Набір елементів списку із зображеннями */}
-	<li className={styles.listItem}>
-		<div>
-		  <img className={styles.listImg} src="" alt="" />
-		</div>
-	</li>
-</ul>
 
-    </div>
-  )
-}
+const ImageGallery = ({ images }) => {
+	return (
+	  <div>
+		<ul className={styles.galleryList}>
+		  {images.length > 0 && images.map((image) => {
+			return (
+			  <li className={styles.listItem} key={image.id}>
+				<ImageCard image={image} />
+				<p>Likes:{image.likes}</p>
 
-export default ImageGallery
+			  </li>
+			);
+		  })}
+		</ul>
+	  </div>
+	);
+  };
+
+export default ImageGallery;
