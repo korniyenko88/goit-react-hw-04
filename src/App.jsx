@@ -70,7 +70,9 @@ function App() {
     setPage(prevPage => prevPage + 1);
   };
   const openModal = image => {
-    setImageModal(image);
+    if (!imageModal || imageModal.id !== image.id) {
+      setImageModal(image);
+    }
   };
 
   const closeModal = () => {

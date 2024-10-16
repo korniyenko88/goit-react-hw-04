@@ -1,0 +1,26 @@
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 50%; /* Ширина модального вікна */
+    max-height: 100%; /* Максимальна висота модального вікна */
+    overflow-y: auto; /* Прокрутка вмісту */
+    border-radius: 8px; /* Округлені краї */
+    background-color: white; /* Фон */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тінь */
+    padding: 20px; /* Внутрішнє відступлення */
+}
+
+.modalContent {
+    padding: 20px; /* Внутрішні відступи */
+    max-height: 60vh; /* Максимальна висота вмісту як 60% від висоти вікна */
+    overflow-y: auto; /* Додає прокрутку, якщо вміст перевищує висоту */
+}
+
+.image {
+    max-width: 100%; /* Обмежити ширину зображення */
+    max-height: 50vh; /* Максимальна висота зображення */
+    object-fit: fill; /* Зберігайте пропорції зображення */
+}
