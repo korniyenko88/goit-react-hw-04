@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
@@ -9,9 +9,6 @@ import ImageModal from './components/ImageModal/ImageModal';
 import Loader from './components/Loader/Loader';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 
-
-
-
 function App() {
   const YOUR_ACCESS_KEY = 'myHNeFHoPkXbeMBmHoSmpyKTa-dnwJKGx5ag4R9Kc-s';
   const [images, setImages] = useState([]);
@@ -19,8 +16,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [imageModal, setImageModal] = useState(null);
-  const [perPage, setPerPage] = useState(30);
+  const [perPage, setPerPage] = useState(8);
   const [error, setError] = useState(null);
+
+  const lastImageRef = useRef(null);
 
   useEffect(() => {
     const updatePerPage = () => {
@@ -30,7 +29,7 @@ function App() {
       const imagesPerRow = Math.floor(vw / 200);
       const rows = Math.floor(vh / 200);
 
-      setPerPage(imagesPerRow * rows);
+      setPerPage(imagesPerRow + 1);
     };
 
     updatePerPage();
@@ -51,7 +50,7 @@ function App() {
         setLoading(true);
         setError(null);
         const { data } = await axios.get(`
-        https://api.unsplash.com/search/photos?client_id=${YOUR_ACCESS_KEY}&query=${searchTerm}&orientation=squarish&page=1&per_page=30`);
+        https://api.unsplash.com/search/photos?client_id=${YOUR_ACCESS_KEY}&query=${searchTerm}&orientation=squarish&page=1&per_page=8`);
         if (data.results.length === 0) {
           throw new Error('No images found.');
         }
@@ -106,6 +105,19 @@ function App() {
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
   };
+  useEffect(() => {
+    if (lastImageRef.current) {
+      const timeoutId = setTimeout(() => {
+        lastImageRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [images.length]);
+
   const openModal = image => {
     if (!imageModal || imageModal.id !== image.id) {
       setImageModal(image);
@@ -127,7 +139,10 @@ function App() {
         <>
           <ImageGallery images={images} onImageClick={openModal} />
           {images.length > 0 && !loading && (
-            <LoadMoreBtn onClick={handleLoadMore} />
+            <>
+              <div ref={lastImageRef} />
+              <LoadMoreBtn onClick={handleLoadMore} />
+            </>
           )}
         </>
       )}

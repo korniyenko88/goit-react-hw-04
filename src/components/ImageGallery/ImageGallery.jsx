@@ -11,7 +11,7 @@ const ImageGallery = ({ images, onImageClick }) => {
             return (
               <li className={styles.listItem} key={image.id}>
                 <ImageCard image={image} onClick={() => onImageClick(image)} />
-                <p>Likes:{image.likes}</p>
+              
               </li>
             );
           })}
