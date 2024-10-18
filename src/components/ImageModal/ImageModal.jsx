@@ -9,7 +9,7 @@ const ImageModal = ({ image, onClose }) => {
       isOpen={!!image}
       onRequestClose={onClose}
       className={styles.modal}
-      overlayClassName={styles.modalOverlay}
+      
     >
       <div className={styles.modalContent}>
         <button onClick={onClose} className={styles.closeButton}>
