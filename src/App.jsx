@@ -50,11 +50,17 @@ function App() {
         setLoading(true);
         setError(null);
         const { data } = await axios.get(`
-        https://api.unsplash.com/search/photos?client_id=${YOUR_ACCESS_KEY}&query=${searchTerm}&orientation=squarish&page=1&per_page=8`);
+        https://api.unsplash.com/search/photos?client_id=${YOUR_ACCESS_KEY}&query=${searchTerm}&orientation=squarish&page=${page}&per_page=${perPage}`);
+
         if (data.results.length === 0) {
           throw new Error('No images found.');
         }
-        setImages(data.results);
+
+        if (page === 1) {
+          setImages(data.results);
+        } else {
+          setImages(prevImages => [...prevImages, ...data.results]);
+        }
       } catch (err) {
         setError(err.message);
         toast.error('Error fetching images.');
@@ -64,36 +70,11 @@ function App() {
     };
 
     fetchImages();
-  }, [searchTerm, perPage]);
-
-  useEffect(() => {
-    const fetchMoreImages = async () => {
-      if (!searchTerm || page === 1) {
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setError(null);
-        const { data } = await axios.get(`
-        https://api.unsplash.com/search/photos?client_id=${YOUR_ACCESS_KEY}&query=${searchTerm}&orientation=squarish&page=${page}&per_page=${perPage}`);
-
-        setImages(prevImages => [...prevImages, ...data.results]);
-      } catch (err) {
-        console.log('err', err);
-        setError(err.message);
-        toast.error('Error fetching more images.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMoreImages();
-  }, [page, searchTerm, perPage]);
+  }, [searchTerm, page, perPage]);
 
   const handleSearch = term => {
-    if (!term) {
-      toast.error("'Please enter a search term'");
+    if (!term || term.trim() === '') {
+      toast.error('Please enter a search term');
 
       return;
     }
